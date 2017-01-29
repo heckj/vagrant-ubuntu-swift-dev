@@ -2,16 +2,17 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  # Swift development targets Ubuntu 15.10
-  config.vm.box = "https://cloud-images.ubuntu.com/vagrant/wily/current/wily-server-cloudimg-amd64-vagrant-disk1.box"
+  # Swift development targets Ubuntu 16.04
+  config.vm.box = "bento/ubuntu-16.04"
   config.vm.define "swift-dev" do |swiftdev|
   end
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = "swift-dev"
     # Building swift requires significant resources
-    vb.memory = "6144"
-    vb.cpus = 4
+    # original was 6GB RAM & 4 cores, trimmed down for my laptop
+    vb.memory = "2048"
+    vb.cpus = 2
   end
 
   # Prevents "stdin: is not a tty" on Ubuntu (https://github.com/mitchellh/vagrant/issues/1673)
@@ -24,49 +25,27 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     echo "Updating virtual machine..."
     sudo DEBIAN_FRONTEND=noninteractive apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
 
     echo "Installing swift prerequisites..."
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y git
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y cmake
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ninja-build
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y clang
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y uuid-dev
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libicu-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y icu-devtools
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libbsd-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libedit-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libxml2-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libsqlite3-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y swig
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libpython-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libncurses5-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y pkg-config
-    
-    echo "Installing libdispatch prerequisites..."
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y autoconf
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libtool
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y pkg-config
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libblocksruntime-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libkqueue-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libbsd-dev
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python-dev
 
-    echo "Installing Sphinx..."
-    sudo easy_install -U Sphinx==1.3.4
+    echo "retrieving Swift GPG signing keys"
+    wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
+    gpg --keyserver hkp://pool.sks-keyservers.net --refresh-keys Swift
 
-    # Create development directory
-    cd /vagrant && mkdir -p swift-dev && cd swift-dev
-
-    echo "Cloning swift from GitHub..."
-    if [ ! -d "swift" ]; then
-      git clone https://github.com/apple/swift.git
-    fi
-    cd swift
-
-    echo "Cloning swift subprojects from GitHub..."
-    ./utils/update-checkout --clone
-
-    echo "Finished setting up development environment - run 'vagrant ssh' to connect,"
-    echo "then '/vagrant/swift-dev/swift/utils/build-script' to compile swift"
+    echo "installing swift"
+    sudo mkdir -p /opt
+    cd /opt
+    wget -q https://swift.org/builds/swift-3.1-branch/ubuntu1604/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04.tar.gz
+    wget -q https://swift.org/builds/swift-3.1-branch/ubuntu1604/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04.tar.gz.sig
+    gpg --verify swift-*.tar.gz.sig
+    tar xzf /opt/swift*.tar.gz
+    sudo chown -R vagrant:vagrant /opt
+    rm -f swift-*.tar.gz*
+    echo "export PATH=/opt/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04/usr/bin:\${PATH}" >> ~vagrant/.bashrc
   SHELL
 end
