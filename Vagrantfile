@@ -46,12 +46,12 @@ Vagrant.configure(2) do |config|
     echo "installing swift"
     sudo mkdir -p /opt
     cd /opt
-    wget -q https://swift.org/builds/swift-3.1-branch/ubuntu1604/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04.tar.gz
-    wget -q https://swift.org/builds/swift-3.1-branch/ubuntu1604/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04.tar.gz.sig
+    wget -q https://swift.org/builds/development/ubuntu1604/swift-DEVELOPMENT-SNAPSHOT-2017-01-27-a/swift-DEVELOPMENT-SNAPSHOT-2017-01-27-a-ubuntu16.04.tar.gz
+    wget -q https://swift.org/builds/development/ubuntu1604/swift-DEVELOPMENT-SNAPSHOT-2017-01-27-a/swift-DEVELOPMENT-SNAPSHOT-2017-01-27-a-ubuntu16.04.tar.gz.sig
     gpg --verify swift-*.tar.gz.sig
     tar xzf /opt/swift*.tar.gz
     sudo chown -R vagrant:vagrant /opt
     rm -f swift-*.tar.gz*
-    echo "export PATH=/opt/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04/usr/bin:\${PATH}" >> ~vagrant/.bashrc
+    echo "export PATH=/opt/swift-DEVELOPMENT-SNAPSHOT-2017-01-27-a-ubuntu16.04/usr/bin:\${PATH}" >> ~vagrant/.bashrc
   SHELL
 end
