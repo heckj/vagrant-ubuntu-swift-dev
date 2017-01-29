@@ -38,6 +38,7 @@ Vagrant.configure(2) do |config|
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python2.7 python2.7-dev
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python-dev
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libcurl3
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libkqueue-dev
 
     echo "retrieving Swift GPG signing keys"
     wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
