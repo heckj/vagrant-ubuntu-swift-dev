@@ -29,3 +29,14 @@ $ vagrant up
 ```
 
 Once your VM has been provisioned, connect to it using the `vagrant ssh` command.
+
+`vagrant ssh`:
+
+```
+vagrant@vagrant:~$ swift --version
+Swift version 3.1-dev (LLVM 40fb70e1b6, Clang 658ce8b57d, Swift d6c7fe1067)
+Target: x86_64-unknown-linux-gnu
+vagrant@vagrant:~$ swift
+Welcome to Swift version 3.1-dev (LLVM 40fb70e1b6, Clang 658ce8b57d, Swift d6c7fe1067). Type :help for assistance.
+  1>
+```
