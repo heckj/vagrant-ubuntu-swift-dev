@@ -7,6 +7,7 @@ import urllib2
 import subprocess
 import os
 
+# swift 3.1 branch: curl https://swift.org/builds/swift-3.1-branch/ubuntu1604/latest-build.yml
 url = "https://swift.org/builds/development/ubuntu1604/latest-build.yml"
 # Get latest snapshot name.
 data = yaml.load(urllib2.urlopen(url).read())
@@ -14,7 +15,7 @@ data = yaml.load(urllib2.urlopen(url).read())
 latestSnapshot = data["download"].replace("-ubuntu16.04.tar.gz", "")
 snapshot = url.rsplit('/', 1)[0] + '/' + latestSnapshot + '/' + data["download"]
 
-print data
+#print data
 
 if data["download"] in os.listdir("."):
     print("Not downloading: " + snapshot)
