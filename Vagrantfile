@@ -3,7 +3,7 @@
 
 Vagrant.configure(2) do |config|
   # Swift development targets Ubuntu 15.10
-  config.vm.box = "https://cloud-images.ubuntu.com/vagrant/wily/current/wily-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
   config.vm.define "swift-dev" do |swiftdev|
   end
 
