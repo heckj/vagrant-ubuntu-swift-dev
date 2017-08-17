@@ -7,12 +7,12 @@ find more on getting started with Swift at
 [swift.org/getting-started](https://swift.org/getting-started/)
 
 This repository provides a `Vagrantfile` which will automatically provision and
-configure swift with Ubuntu 16.04 as a development environment. It also includes
+configure swift with Ubuntu 16.10 as a development environment. It also includes
 the tooling to create a Docker based development snapshot
 
 The Vagrantfile will:
 
-1. Install an Ubuntu 16.04 virtual machine
+1. Install an Ubuntu 16.10 virtual machine
 2. Install development prerequisites
 3. Install a swift compiler and related tool chain
 
@@ -22,7 +22,7 @@ The Vagrantfile will:
 3. [Virtualbox](https://www.virtualbox.org)
 
 The script `update_swift_snapshot.py` will download the latest development
-snapshot and build an Ubuntu 16.04 based docker image with it installed.
+snapshot and build an Ubuntu 16.10 based docker image with it installed.
 
 # Prerequisites
 1. [git](https://git-scm.com)
@@ -42,11 +42,16 @@ Once your VM has been provisioned, connect to it using the `vagrant ssh` command
 
 ```
 vagrant@vagrant:~$ swift --version
-Swift version 3.1-dev (LLVM cf8fb2a946, Clang fc4e9393a7, Swift 52601c0e98)
+Swift version 4.0-dev (LLVM 13d90f33cc, Clang 9d4bf0beef, Swift b2efaab218)
 Target: x86_64-unknown-linux-gnu
+
 vagrant@vagrant:~$ swift
-Welcome to Swift version 3.1-dev (LLVM cf8fb2a946, Clang fc4e9393a7, Swift 52601c0e98). Type :help for assistance.
-  1>
+***  You are running Swift's integrated REPL,  ***
+***  intended for compiler and stdlib          ***
+***  development and testing purposes only.    ***
+***  The full REPL is built as part of LLDB.   ***
+***  Type ':help' for assistance.              ***
+(swift)
 ```
 
 ---
@@ -60,12 +65,13 @@ pip install -r requirements.txt
 ./update_swift_snapshot.py
 ```
 
-The docker image is built as `swiftpm-docker-1604`:
+The docker image is built as `swiftpm-docker-1610`:
 
 ```
 $ docker images
 REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
-swiftpm-docker-1604   latest              42a3076b7676        8 minutes ago       1.39 GB
-<none>                <none>              5dce2557ba11        18 minutes ago      840 MB
-ubuntu                16.04               f49eec89601e        8 days ago          129 MB
+swiftpm-docker-1610   latest              dce3b5086cbd        15 minutes ago      1.41GB
+ubuntu                16.10               7d3f705d307c        3 weeks ago         107MB
 ```
+
+For more notes on using the docker image locally, see [docker development notes](./docker_devnotes.md)
