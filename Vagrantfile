@@ -3,7 +3,7 @@
 
 Vagrant.configure(2) do |config|
   # Swift development targets Ubuntu 16.04
-  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.box = "bento/ubuntu-16.10"
   config.vm.define "swift-dev" do |swiftdev|
   end
 
@@ -37,7 +37,9 @@ Vagrant.configure(2) do |config|
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libedit-dev
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python2.7 python2.7-dev
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python-dev
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libcurl3
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libcurl4 libcurl4-openssl-dev
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libssl-dev openssl
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libkqueue-dev
 
     echo "retrieving Swift GPG signing keys"
     wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
@@ -46,12 +48,12 @@ Vagrant.configure(2) do |config|
     echo "installing swift"
     sudo mkdir -p /opt
     cd /opt
-    wget -q https://swift.org/builds/swift-3.1-branch/ubuntu1604/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04.tar.gz
-    wget -q https://swift.org/builds/swift-3.1-branch/ubuntu1604/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04.tar.gz.sig
+    wget -q https://swift.org/builds/development/ubuntu1610/swift-DEVELOPMENT-SNAPSHOT-2017-08-15-a/swift-DEVELOPMENT-SNAPSHOT-2017-08-15-a-ubuntu16.10.tar.gz
+    wget -q https://swift.org/builds/development/ubuntu1610/swift-DEVELOPMENT-SNAPSHOT-2017-08-15-a/swift-DEVELOPMENT-SNAPSHOT-2017-08-15-a-ubuntu16.10.tar.gz.sig
     gpg --verify swift-*.tar.gz.sig
     tar xzf /opt/swift*.tar.gz
     sudo chown -R vagrant:vagrant /opt
     rm -f swift-*.tar.gz*
-    echo "export PATH=/opt/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-01-22-a-ubuntu16.04/usr/bin:\${PATH}" >> ~vagrant/.bashrc
+    echo "export PATH=/opt/swift-DEVELOPMENT-SNAPSHOT-2017-08-15-a-ubuntu16.10/usr/bin:\${PATH}" >> ~vagrant/.bashrc
   SHELL
 end

@@ -1,3 +1,4 @@
 .vagrant
 .venv
 swift-DEVELOPMENT-SNAPSHOT*
+swift-*.tar.gz
